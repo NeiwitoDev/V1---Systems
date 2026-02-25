@@ -1122,16 +1122,7 @@ client.on('interactionCreate', async (interaction) => {
             await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true });
         }
     }
-});
-import pkg from 'pg';
-const { Pool } = pkg;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
 // ================== LOGIN ==================
 if (!process.env.DISCORD_TOKEN) {
     console.error('❌ ERROR: DISCORD_TOKEN no encontrado en las variables de entorno.');
