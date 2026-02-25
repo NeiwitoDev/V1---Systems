@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import { Client, GatewayIntentBits, EmbedBuilder, REST, Routes, ApplicationCommandOptionType, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from 'discord.js';
 import 'dotenv/config';
 import pg from 'pg';
