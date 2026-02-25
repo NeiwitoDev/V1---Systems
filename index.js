@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { Client, GatewayIntentBits, EmbedBuilder, REST, Routes, ApplicationCommandOptionType, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from 'discord.js';
 import 'dotenv/config';
 import pg from 'pg';
@@ -410,19 +408,40 @@ client.once('ready', async () => {
     console.log(`✅ Bot online como ${client.user.tag}`);
 
     // Configurar estado del bot
-    client.user.setPresence({
-        activities: [
-            { name: 'Developer: @neiwito', type: 3 }, // Watching
-            { name: '↪ Villa Carlos paz RP [VCP]', type: 0 }  // Playing
-        ],
-        status: 'online'
-    });
+    const setBotPresence = () => {
+        try {
+            client.user.setPresence({
+                activities: [
+                    { name: 'Developer: @neiwito', type: 3 }, // Watching
+                    { name: '↪ Villa Carlos paz RP [VCP]', type: 0 }  // Playing
+                ],
+                status: 'online'
+            });
+            console.log('🎮 Presencia enviada a Discord');
+        } catch (error) {
+            console.error('❌ Error al establecer presencia:', error);
+        }
+    };
+
+    // Primera ejecución
+    setBotPresence();
+    
+    // Forzar actualización cada 15 segundos los primeros 2 minutos
+    let count = 0;
+    const initialInterval = setInterval(() => {
+        setBotPresence();
+        count++;
+        if (count >= 8) clearInterval(initialInterval);
+    }, 15000);
+
+    // Luego mantener cada 5 minutos
+    setInterval(setBotPresence, 300000);
 
     const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 
     try {
         console.log('⏳ Registrando comandos...');
-        await rest.put(
+        const data = await rest.put(
             Routes.applicationCommands(client.user.id),
             { body: commands },
         );
@@ -1106,4 +1125,23 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // ================== LOGIN ==================
-client.login(process.env.TOKEN);
+if (!process.env.DISCORD_TOKEN) {
+    console.error('❌ ERROR: DISCORD_TOKEN no encontrado en las variables de entorno.');
+} else {
+    client.login(process.env.DISCORD_TOKEN).catch(err => {
+        console.error('❌ Error crítico al iniciar sesión:', err.message);
+    });
+}
+
+// Sistema de persistencia de presencia (cada 45 segundos)
+setInterval(() => {
+    if (client.user && client.isReady()) {
+        client.user.setPresence({
+            activities: [
+                { name: 'Developer: @neiwito', type: 3 },
+                { name: '↪ Villa Carlos paz RP [VCP]', type: 0 }
+            ],
+            status: 'online'
+        });
+    }
+}, 45000);
