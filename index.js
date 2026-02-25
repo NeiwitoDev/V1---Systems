@@ -1138,7 +1138,7 @@ setInterval(() => {
         client.user.setPresence({
             activities: [
                 { name: 'Developer: @neiwito', type: 3 },
-                { name: '↪ Villa Carlos paz RP [VCP]', type: 0 }
+                { name: '↪ Villa Carlos paz RP [VCP]', type: 3 }
             ],
             status: 'online'
         });
