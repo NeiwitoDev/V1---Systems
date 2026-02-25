@@ -1,3 +1,6 @@
+import pg from "pg";
+const { Pool } = pg;
+
 import { Client, GatewayIntentBits, EmbedBuilder, REST, Routes, ApplicationCommandOptionType, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from 'discord.js';
 import 'dotenv/config';
 import pg from 'pg';
@@ -7,11 +10,8 @@ import { fileURLToPath } from 'url';
 import axios from 'axios';
 import './keep_alive.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const pool = new Pool({
-  connectionString: process.env.DATABASE_PUBLIC_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
