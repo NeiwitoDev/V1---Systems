@@ -3,7 +3,6 @@ const { Pool } = pg;
 
 import { Client, GatewayIntentBits, EmbedBuilder, REST, Routes, ApplicationCommandOptionType, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from 'discord.js';
 import 'dotenv/config';
-import pg from 'pg';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -16,6 +15,7 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
+
 const app = express();
 const PORT = 5000;
 
